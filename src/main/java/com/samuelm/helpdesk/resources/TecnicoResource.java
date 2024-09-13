@@ -3,6 +3,7 @@ package com.samuelm.helpdesk.resources;
 import com.samuelm.helpdesk.domain.Tecnico;
 import com.samuelm.helpdesk.dtos.TecnicoDTO;
 import com.samuelm.helpdesk.services.TecnicoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +25,11 @@ public class TecnicoResource {
     }
     @GetMapping
     public ResponseEntity<List<TecnicoDTO>> findAll(){
-        return ResponseEntity.ok().body(service.findAll().stream().map(x -> new TecnicoDTO(x)).collect(Collectors.toList()));
+        return ResponseEntity.ok().body(service.findAll().stream().map(TecnicoDTO::new).collect(Collectors.toList()));
     }
 
     @PostMapping
-    public ResponseEntity<TecnicoDTO> create(@RequestBody TecnicoDTO dto){
+    public ResponseEntity<TecnicoDTO> create(@Valid @RequestBody TecnicoDTO dto){
         Tecnico newTec = service.create(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newTec.getId()).toUri();
         return ResponseEntity.created(uri).build();

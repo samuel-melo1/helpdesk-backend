@@ -36,7 +36,6 @@ public class TecnicoService {
         Tecnico tecnico = new Tecnico(dto);
         return repository.save(tecnico);
     }
-
     private void validaPorCpfEEmail(TecnicoDTO dto) {
         Optional<Pessoa> obj = pessoaRepository.findByCpf(dto.getCpf());
         if(obj.isPresent() && obj.get().getId() != dto.getId()){
@@ -46,6 +45,5 @@ public class TecnicoService {
         if(obj.isPresent() && obj.get().getId() != dto.getId()){
             throw new DataIntegrityViolationException("Email já cadastrado no sistema");
         }
-
     }
 }

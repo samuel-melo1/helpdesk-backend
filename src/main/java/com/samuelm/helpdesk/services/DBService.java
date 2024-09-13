@@ -26,24 +26,24 @@ public class DBService {
 
     public void instaciaDB(){
 
-        Tecnico tecnico1 = new Tecnico(null, "Samuel", "38037277070", "samuel@gmail.com","123");
-        Tecnico tecnico2 = new Tecnico(null, "Vinicius", "38037277072", "vinicius@gmail.com","123");
-        Tecnico tecnico3 = new Tecnico(null, "Leticia", "38037277012", "leticia@gmail.com","123");
-        Tecnico tecnico4 = new Tecnico(null, "Bruno", "38037277230", "hruno@gmail.com","123");
-        Tecnico tecnico5 = new Tecnico(null, "Henrique", "38457277070", "henrique@gmail.com","123");
-        Tecnico tecnico6 = new Tecnico(null, "Juliano", "38037236070", "juliano@gmail.com","123");
+        Tecnico tecnico1 = new Tecnico(null, "Samuel", "601.216.170-09", "samuel@gmail.com","123");
+        Tecnico tecnico2 = new Tecnico(null, "Vinicius", "611.505.080-43", "vinicius@gmail.com","123");
+        Tecnico tecnico3 = new Tecnico(null, "Leticia", "322.671.730-85", "leticia@gmail.com","123");
+        Tecnico tecnico4 = new Tecnico(null, "Bruno", "700.333.000-89", "hruno@gmail.com","123");
+        Tecnico tecnico5 = new Tecnico(null, "Henrique", "595.260.880-93", "henrique@gmail.com","123");
+        Tecnico tecnico6 = new Tecnico(null, "Juliano", "623.164.660-28", "juliano@gmail.com","123");
 
         tecnico1.addPerfil(Perfil.ADMIN);
         tecnico2.addPerfil(Perfil.TECNICO);
         tecnico3.addPerfil(Perfil.ADMIN);
         tecnico4.addPerfil(Perfil.TECNICO);
         tecnico5.addPerfil(Perfil.TECNICO);
-        Cliente cliente1 = new Cliente(null, "Samuel", "08128874098", "samuel2@gmail.com", "234");
-        Cliente cliente2 = new Cliente(null, "Matheus", "08128874348", "matheus@gmail.com", "234");
-        Cliente cliente3 = new Cliente(null, "Lorenço", "02128834098", "lorenco@gmail.com", "234");
-        Cliente cliente4 = new Cliente(null, "João Lucas", "01124674098", "joao@gmail.com", "234");
-        Cliente cliente5 = new Cliente(null, "Guizzo", "04128816098", "guizzo@gmail.com", "234");
-        Cliente cliente6 = new Cliente(null, "Rafael", "06128873498", "rafael@gmail.com", "234");
+        Cliente cliente1 = new Cliente(null, "Samuel", "479.701.920-41", "samuel2@gmail.com", "234");
+        Cliente cliente2 = new Cliente(null, "Matheus", "882.013.400-43", "matheus@gmail.com", "234");
+        Cliente cliente3 = new Cliente(null, "Lorenço", "650.118.140-25", "lorenco@gmail.com", "234");
+        Cliente cliente4 = new Cliente(null, "João Lucas", "780.031.780-37", "joao@gmail.com", "234");
+        Cliente cliente5 = new Cliente(null, "Guizzo", "623.348.960-12", "guizzo@gmail.com", "234");
+        Cliente cliente6 = new Cliente(null, "Rafael", "104.083.020-03", "rafael@gmail.com", "234");
 
         cliente1.addPerfil(Perfil.ADMIN);
         cliente2.addPerfil(Perfil.ADMIN);

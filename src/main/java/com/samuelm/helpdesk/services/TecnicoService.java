@@ -7,6 +7,7 @@ import com.samuelm.helpdesk.repositories.PessoaRepository;
 import com.samuelm.helpdesk.repositories.TecnicoRepository;
 import com.samuelm.helpdesk.services.exceptions.DataIntegrityViolationException;
 import com.samuelm.helpdesk.services.exceptions.ObjectNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,10 +23,11 @@ public class TecnicoService {
     @Autowired
     private PessoaRepository pessoaRepository;
 
-    public Tecnico findById(Integer id){
+    public Tecnico findById(Integer id) {
         Optional<Tecnico> obj = repository.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!  Id: " + id));
     }
+
     public List<Tecnico> findAll() {
         return repository.findAll();
     }
@@ -36,14 +38,25 @@ public class TecnicoService {
         Tecnico tecnico = new Tecnico(dto);
         return repository.save(tecnico);
     }
+
+    public Tecnico update(Integer id, @Valid TecnicoDTO dto) {
+        dto.setId(id);
+        findById(id);
+        validaPorCpfEEmail(dto);
+        Tecnico oldObj = new Tecnico(dto);
+        return repository.save(oldObj);
+    }
+
     private void validaPorCpfEEmail(TecnicoDTO dto) {
         Optional<Pessoa> obj = pessoaRepository.findByCpf(dto.getCpf());
-        if(obj.isPresent() && obj.get().getId() != dto.getId()){
+        if (obj.isPresent() && obj.get().getId() != dto.getId()) {
             throw new DataIntegrityViolationException("CPF já cadastrado no sistema");
         }
         obj = pessoaRepository.findByEmail(dto.getEmail());
-        if(obj.isPresent() && obj.get().getId() != dto.getId()){
+        if (obj.isPresent() && obj.get().getId() != dto.getId()) {
             throw new DataIntegrityViolationException("Email já cadastrado no sistema");
         }
     }
+
+
 }

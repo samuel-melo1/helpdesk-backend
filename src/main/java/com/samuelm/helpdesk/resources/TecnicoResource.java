@@ -27,11 +27,16 @@ public class TecnicoResource {
     public ResponseEntity<List<TecnicoDTO>> findAll(){
         return ResponseEntity.ok().body(service.findAll().stream().map(TecnicoDTO::new).collect(Collectors.toList()));
     }
-
     @PostMapping
     public ResponseEntity<TecnicoDTO> create(@Valid @RequestBody TecnicoDTO dto){
         Tecnico newTec = service.create(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newTec.getId()).toUri();
         return ResponseEntity.created(uri).build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TecnicoDTO> update(@PathVariable("id") Integer id, @Valid @RequestBody TecnicoDTO dto){
+        Tecnico oldObj = service.update(id,  dto);
+        return ResponseEntity.ok().body(new TecnicoDTO(oldObj));
     }
 }

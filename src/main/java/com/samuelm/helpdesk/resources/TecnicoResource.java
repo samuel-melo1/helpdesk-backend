@@ -33,10 +33,15 @@ public class TecnicoResource {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newTec.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
-
     @PutMapping("/{id}")
     public ResponseEntity<TecnicoDTO> update(@PathVariable("id") Integer id, @Valid @RequestBody TecnicoDTO dto){
         Tecnico oldObj = service.update(id,  dto);
         return ResponseEntity.ok().body(new TecnicoDTO(oldObj));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<TecnicoDTO> delete(@PathVariable("id") Integer id){
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

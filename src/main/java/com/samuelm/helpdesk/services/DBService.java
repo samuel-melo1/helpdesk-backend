@@ -50,7 +50,7 @@ public class DBService {
         cliente3.addPerfil(Perfil.ADMIN);
 
         Chamado chamado1 = new Chamado(null, Prioridade.MEDIA, Status.ANDAMENTO, "Chamado 01", "Primeiro Chamado", tecnico1, cliente1);
-        Chamado chamado2 = new Chamado(null, Prioridade.ALTA, Status.ABERTO, "Chamado 02", "Segundo Chamado", tecnico2, cliente1);
+        Chamado chamado2 = new Chamado(null, Prioridade.ALTA, Status.ABERTO, "Chamado 02", "Segundo Chamado", tecnico5, cliente1);
         Chamado chamado3 = new Chamado(null, Prioridade.ALTA, Status.ANDAMENTO, "Chamado 03", "Terceiro Chamado", tecnico3, cliente4);
         Chamado chamado4 = new Chamado(null, Prioridade.BAIXA, Status.ABERTO, "Chamado 04", "Quarto Chamado", tecnico1, cliente2);
         Chamado chamado5 = new Chamado(null, Prioridade.BAIXA, Status.ANDAMENTO, "Chamado 05", "Quinto Chamado", tecnico4, cliente5);

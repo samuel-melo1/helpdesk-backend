@@ -29,7 +29,6 @@ public class ChamadoDTO implements Serializable {
     private String nomeCliente;
 
     public ChamadoDTO(){
-        super();
     }
 
     public ChamadoDTO(Chamado obj) {

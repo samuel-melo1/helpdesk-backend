@@ -39,7 +39,7 @@ public class ChamadoService {
     }
 
     private Chamado newChamado(ChamadoDTO dto){
-        Tecnico tecnico = tecnicoService.findById(dto.getId());
+        Tecnico tecnico = tecnicoService.findById(dto.getTecnico());
         Cliente cliente = clienteService.findById(dto.getCliente());
 
         Chamado chamado = new Chamado();

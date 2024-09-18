@@ -8,10 +8,9 @@ import com.samuelm.helpdesk.repositories.TecnicoRepository;
 import com.samuelm.helpdesk.services.exceptions.DataIntegrityViolationException;
 import com.samuelm.helpdesk.services.exceptions.ObjectNotFoundException;
 import jakarta.validation.Valid;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +21,8 @@ public class TecnicoService {
     private TecnicoRepository repository;
     @Autowired
     private PessoaRepository pessoaRepository;
-
+    @Autowired
+    private BCryptPasswordEncoder encoder;
     public Tecnico findById(Integer id) {
         Optional<Tecnico> obj = repository.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException("Técnico não encontrado!  Id: " + id));
@@ -34,6 +34,7 @@ public class TecnicoService {
 
     public Tecnico create(TecnicoDTO dto) {
         dto.setId(null);
+        dto.setSenha(encoder.encode(dto.getSenha()));
         validaPorCpfEEmail(dto);
         Tecnico tecnico = new Tecnico(dto);
         return repository.save(tecnico);

@@ -1,5 +1,6 @@
 package com.samuelm.helpdesk.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.samuelm.helpdesk.services.DBService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

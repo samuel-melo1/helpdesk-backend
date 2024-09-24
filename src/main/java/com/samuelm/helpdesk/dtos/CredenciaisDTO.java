@@ -4,7 +4,9 @@ public class CredenciaisDTO {
 
     private String email;
     private String senha;
-
+    public CredenciaisDTO(){
+        super();
+    }
     public CredenciaisDTO(String email, String senha) {
         this.email = email;
         this.senha = senha;

@@ -1,5 +1,7 @@
 package com.samuelm.helpdesk.config;
 
+import com.samuelm.helpdesk.security.JWTAuthenticationFilter;
+import com.samuelm.helpdesk.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -26,9 +29,12 @@ public class SecurityConfig  {
 
     @Autowired
     private Environment env;
+    @Autowired
+    private JWTUtil jwtUtil;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, AuthenticationManager authenticationManager) throws Exception{
+        JWTAuthenticationFilter jwtAuthenticationFilter =new JWTAuthenticationFilter(authenticationManager, jwtUtil);
         if(Arrays.asList(env.getActiveProfiles()).contains("test")){
             httpSecurity.headers(headers -> headers.disable());
         }
@@ -38,8 +44,11 @@ public class SecurityConfig  {
                         .requestMatchers(PUBLIC_MATCHERS).permitAll()
                         .anyRequest().authenticated())
                 .cors(cors -> corsConfigurationSource())
+               .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
+
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {

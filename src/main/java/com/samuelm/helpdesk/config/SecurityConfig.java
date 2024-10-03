@@ -23,6 +23,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 
@@ -31,7 +33,7 @@ import java.util.Arrays;
 @EnableGlobalAuthentication
 public class SecurityConfig  {
 
-    private static final String[] PUBLIC_MATCHERS = {"/h2-console/**", "/login.do"};
+    private static final String[] PUBLIC_MATCHERS = {"/h2-console/**"};
 
     @Autowired
     private Environment env;
@@ -47,28 +49,31 @@ public class SecurityConfig  {
         if(Arrays.asList(env.getActiveProfiles()).contains("test")){
             httpSecurity.headers(headers -> headers.disable());
         }
-       return httpSecurity.csrf((csrf) -> csrf.disable())
+       return httpSecurity.csrf((csrf) -> csrf.ignoringRequestMatchers(toH2Console()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(PUBLIC_MATCHERS).permitAll()
                         .requestMatchers(HttpMethod.POST, "/tecnicos").hasAnyAuthority("ROLE_ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/tecnicos").hasAnyAuthority("ROLE_ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/tecnicos").hasAnyAuthority("ROLE_ADMIN")
+                        .requestMatchers(toH2Console()).permitAll()
                         .anyRequest().authenticated())
                 .cors(cors -> corsConfigurationSource())
-               .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-               .addFilterBefore(jwtAuthorizationFilter, BasicAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthorizationFilter, BasicAuthenticationFilter.class)
                 .build();
     }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedOrigin("https://helpdesk.up.railway.app/h2-console/**");
-        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "OPTIONS"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        CorsConfiguration config = new CorsConfiguration();
+       // config.addAllowedOrigin("http://localhost:4200");
+        config.addAllowedMethod("*");
+        config.addAllowedOrigin("*");
+        config.addAllowedHeader("*");
+        config.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "OPTIONS"));
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
     @Bean

@@ -43,10 +43,13 @@ public class ClienteService {
 
     public Cliente update(Integer id, @Valid ClienteDTO dto) {
         dto.setId(id);
-        findById(id);
+        Cliente oldObj = findById(id);
+        if (!dto.getSenha().equals(oldObj.getSenha())) {
+            dto.setSenha(encoder.encode(dto.getSenha()));
+        }
         validaPorCpfEEmail(dto);
-        Cliente oldObj = new Cliente(dto);
-        return repository.save(oldObj);
+        Cliente newObj = new Cliente(dto);
+        return repository.save(newObj);
     }
 
     public void delete(Integer id) {

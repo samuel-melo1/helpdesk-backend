@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,7 @@ public class TecnicoService {
     private PessoaRepository pessoaRepository;
     @Autowired
     private BCryptPasswordEncoder encoder;
+
     public Tecnico findById(Integer id) {
         Optional<Tecnico> obj = repository.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException("Técnico não encontrado!  Id: " + id));
@@ -42,15 +44,19 @@ public class TecnicoService {
 
     public Tecnico update(Integer id, @Valid TecnicoDTO dto) {
         dto.setId(id);
-        findById(id);
+        Tecnico oldObj = findById(id);
+
+        if (!dto.getSenha().equals(oldObj.getSenha())) {
+            dto.setSenha(encoder.encode(dto.getSenha()));
+        }
         validaPorCpfEEmail(dto);
-        Tecnico oldObj = new Tecnico(dto);
-        return repository.save(oldObj);
+        Tecnico newObj = new Tecnico(dto);
+        return repository.save(newObj);
     }
 
     public void delete(Integer id) {
         Tecnico obj = findById(id);
-        if(obj.getChamados().size() > 0){
+        if (obj.getChamados().size() > 0) {
             throw new DataIntegrityViolationException("Técnico possui ordens de serviço e não pode ser deletado!");
         }
         repository.deleteById(id);
@@ -66,7 +72,6 @@ public class TecnicoService {
             throw new DataIntegrityViolationException("Email já cadastrado no sistema");
         }
     }
-
 
 
 }
